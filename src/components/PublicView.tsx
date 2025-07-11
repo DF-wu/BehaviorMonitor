@@ -130,7 +130,12 @@ const PublicView: React.FC = () => {
           type: record.type === 'reward' ? '獎勵' : '懲罰'
         });
         return acc;
-      }, [] as any[]);
+      }, [] as Array<{
+        date: string;
+        score: number;
+        total: number;
+        type: string;
+      }>);
 
     // 每日統計數據
     const dailyStats = scoreRecords.reduce((acc, record) => {
@@ -145,10 +150,15 @@ const PublicView: React.FC = () => {
       }
       acc[date].total += record.score;
       return acc;
-    }, {} as Record<string, any>);
+    }, {} as Record<string, {
+      date: string;
+      rewards: number;
+      punishments: number;
+      total: number;
+    }>);
 
     const dailyData = Object.values(dailyStats)
-      .sort((a: any, b: any) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf())
+      .sort((a, b) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf())
       .slice(-14); // 最近14天
 
     // 熱力圖數據 - 一週內每小時的活動分佈
@@ -164,7 +174,12 @@ const PublicView: React.FC = () => {
         acc[key].count += 1;
         acc[key].score += Math.abs(record.score);
         return acc;
-      }, {} as Record<string, any>);
+      }, {} as Record<string, {
+        day: string;
+        hour: number;
+        count: number;
+        score: number;
+      }>);
 
     return {
       trendData,
@@ -202,7 +217,7 @@ const PublicView: React.FC = () => {
         shape: 'circle',
       },
       tooltip: {
-        formatter: (datum: any) => {
+        formatter: (datum: { type: string; score: number; total: number }) => {
           return {
             name: datum.type,
             value: `${datum.score > 0 ? '+' : ''}${datum.score} 分 (累計: ${datum.total})`
@@ -220,7 +235,11 @@ const PublicView: React.FC = () => {
       return <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>暫無數據</div>;
     }
 
-    const data = chartData.dailyData.flatMap((item: any) => [
+    const data = chartData.dailyData.flatMap((item: {
+      date: string;
+      rewards: number;
+      punishments: number;
+    }) => [
       { date: dayjs(item.date).format('MM-DD'), type: '獎勵', value: item.rewards },
       { date: dayjs(item.date).format('MM-DD'), type: '懲罰', value: item.punishments }
     ]);
@@ -236,7 +255,7 @@ const PublicView: React.FC = () => {
         radius: [4, 4, 0, 0],
       },
       tooltip: {
-        formatter: (datum: any) => {
+        formatter: (datum: { type: string; value: number }) => {
           return {
             name: datum.type,
             value: `${datum.value} 分`
@@ -261,7 +280,7 @@ const PublicView: React.FC = () => {
       colorField: 'count',
       color: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'],
       tooltip: {
-        formatter: (datum: any) => {
+        formatter: (datum: { count: number; score: number }) => {
           return {
             name: '活動次數',
             value: `${datum.count} 次 (${datum.score} 分)`
