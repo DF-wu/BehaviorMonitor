@@ -46,12 +46,12 @@ const QUICK_ACTIONS = {
     { score: 200, reason: '重大成就', color: '#13c2c2' }
   ],
   punishments: [
-    { score: -10, reason: '忘記做某件事', color: '#fa8c16' },
-    { score: -15, reason: '不聽話', color: '#fa541c' },
-    { score: -25, reason: '犯錯誤', color: '#ff4d4f' },
-    { score: -50, reason: '嚴重違規', color: '#ff7875' },
-    { score: -100, reason: '重大違規', color: '#ff4d4f' },
-    { score: -200, reason: '極嚴重違規', color: '#cf1322' }
+    { score: -15, reason: '忘記做某件事', color: '#fa8c16' },
+    { score: -30, reason: '不聽話', color: '#fa541c' },
+    { score: -50, reason: '犯錯誤', color: '#ff4d4f' },
+    { score: -100, reason: '嚴重違規', color: '#ff7875' },
+    { score: -200, reason: '重大違規', color: '#ff4d4f' },
+    { score: -500, reason: '極嚴重違規', color: '#cf1322' }
   ]
 };
 
