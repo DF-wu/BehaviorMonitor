@@ -43,7 +43,7 @@ const getBackgroundColor = (score: number): string => {
  * @returns JSX 元素
  */
 
-const showPageTitle = () => (
+const ShowPageTitle = () => (
   <Title
     level={2}
     style={{
@@ -312,7 +312,7 @@ const PublicView: React.FC = () => {
       }}
     >
       {/* 頁面標題 */}
-      {showPageTitle()}
+      {ShowPageTitle()}
 
       {/* 主要分數顯示區域 */}
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>

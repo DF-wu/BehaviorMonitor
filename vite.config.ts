@@ -12,6 +12,8 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     minify: 'terser',
+    // 修復 crypto.hash 問題
+    target: 'esnext',
     rollupOptions: {
       output: {
         // 分割程式碼以優化載入速度
@@ -23,6 +25,19 @@ export default defineConfig({
         }
       }
     }
+  },
+  // 修復 Node.js 兼容性問題
+  define: {
+    global: 'globalThis',
+  },
+  // 解決 @antv/layout 的 crypto 問題
+  resolve: {
+    alias: {
+      crypto: 'crypto-browserify'
+    }
+  },
+  optimizeDeps: {
+    include: ['crypto-browserify']
   },
   server: {
     // 開發服務器設定
