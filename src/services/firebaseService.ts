@@ -12,6 +12,7 @@ import {
   getDoc,
   addDoc,
   updateDoc,
+  setDoc,
   deleteDoc,
   query,
   orderBy,
@@ -179,14 +180,16 @@ export class SettingsService {
 
   /**
    * 初始化預設設定
+   * Creates default settings document if it doesn't exist
    */
   static async initializeDefaultSettings(): Promise<void> {
     try {
       const docRef = doc(db, COLLECTIONS.SETTINGS, this.SETTINGS_DOC_ID);
       const docSnap = await getDoc(docRef);
-      
+
       if (!docSnap.exists()) {
-        await updateDoc(docRef, {
+        // Use setDoc to create a new document
+        await setDoc(docRef, {
           initialScore: 100,
           dailyIncrement: 1,
           notificationThreshold: 50,
@@ -194,6 +197,7 @@ export class SettingsService {
           createdAt: Timestamp.now(),
           updatedAt: Timestamp.now()
         });
+        console.log('Default settings initialized successfully');
       }
     } catch (error) {
       console.error('Error initializing settings:', error);
