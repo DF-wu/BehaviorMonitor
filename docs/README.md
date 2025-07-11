@@ -1,67 +1,50 @@
 # Behavior Monitor 文檔中心
 
-## 📚 文檔結構
+## 📚 簡化文檔結構
 
-本目錄包含 Behavior Monitor 專案的所有文檔，按類別組織：
+本目錄包含 Behavior Monitor 專案的所有文檔，已合併為更簡潔的結構：
 
-### 📋 核心文檔
-- [DEVELOPMENT_GUIDE.md](./DEVELOPMENT_GUIDE.md) - 開發環境設置和架構說明
-- [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) - 部署流程和配置說明
-- [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) - Firebase Functions API 參考
-- [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) - 常見問題和解決方案
-
-### 📊 專案文檔
-- [PROJECT_SUMMARY.md](./PROJECT_SUMMARY.md) - 專案完成狀況和技術總結
-- [FINAL_CHECKLIST.md](./FINAL_CHECKLIST.md) - 功能完成度驗證清單
-- [projectDescription.md](./projectDescription.md) - 原始專案需求描述
-
-### 🔧 技術升級文檔
-- [NODE_UPGRADE.md](./NODE_UPGRADE.md) - Node.js 升級到最新版本指南
-- [PNPM_MIGRATION.md](./PNPM_MIGRATION.md) - npm 到 pnpm 遷移指南
-- [GITHUB_AUTO_BUILD_SETUP.md](./GITHUB_AUTO_BUILD_SETUP.md) - GitHub Actions 自動構建設置
-- [GITHUB_BUILD_FIX.md](./GITHUB_BUILD_FIX.md) - GitHub Actions 問題修復記錄
-
-### 🛠 修復記錄 (fixes/)
-- [ADMIN_PASSWORD_FIX.md](./fixes/ADMIN_PASSWORD_FIX.md) - 管理員登入問題修復
-- [GITHUB_ACTIONS_FIX.md](./fixes/GITHUB_ACTIONS_FIX.md) - CI/CD 構建問題修復
-- [OPERATION_TYPE_FIX.md](./fixes/OPERATION_TYPE_FIX.md) - 管理介面操作類型切換修復
-- [PNPM_WORKSPACE_FIX.md](./fixes/PNPM_WORKSPACE_FIX.md) - pnpm workspace 配置錯誤修復
-
-### 🚀 功能特色 (features/)
-- [LAZY_UPDATE_AND_LIMITS_REMOVAL.md](./features/LAZY_UPDATE_AND_LIMITS_REMOVAL.md) - Lazy Update 和移除限制功能
-- [PUBLIC_VIEW_CHARTS_FEATURE.md](./features/PUBLIC_VIEW_CHARTS_FEATURE.md) - 公開視圖統計圖表功能
-
-### 📖 使用指南 (guides/)
-- [UI_UX_Documentation.md](./guides/UI_UX_Documentation.md) - 使用者介面設計文檔
+### 📋 核心文檔 (7個主要文檔)
+- [DEVELOPMENT.md](./DEVELOPMENT.md) - 開發指南、API文檔、故障排除
+- [DEPLOYMENT.md](./DEPLOYMENT.md) - 部署流程和配置說明
+- [PROJECT.md](./PROJECT.md) - 專案信息、完成狀況、需求描述
+- [TECHNICAL_UPGRADES.md](./TECHNICAL_UPGRADES.md) - Node.js升級、pnpm遷移、CI/CD改進
+- [FIXES.md](./FIXES.md) - 所有修復記錄和解決方案
+- [FEATURES.md](./FEATURES.md) - 功能特色和技術實現
+- [UI_GUIDE.md](./UI_GUIDE.md) - 使用者介面設計指南
 
 ### 🛠 工具腳本 (scripts/)
 - [deploy.sh](./scripts/deploy.sh) - 一鍵部署到 GitHub Pages
 - [test-app.sh](./scripts/test-app.sh) - 自動化測試套件
 - [check-deployment.sh](./scripts/check-deployment.sh) - 部署狀態檢查工具
 
+### 📁 其他文檔
+- [FILE_STRUCTURE_CLEANUP.md](./FILE_STRUCTURE_CLEANUP.md) - 文件結構清理記錄
+- [README.md](./README.md) - 本文檔導覽
+
 ---
 
 ## 📖 快速導覽
 
 ### 🆕 新手入門
-1. 閱讀 [專案描述](./projectDescription.md) 了解專案背景
-2. 查看 [開發指南](./DEVELOPMENT_GUIDE.md) 設置開發環境
-3. 參考 [API 文檔](./API_DOCUMENTATION.md) 了解系統架構
+1. 閱讀 [專案信息](./PROJECT.md) 了解專案背景和完成狀況
+2. 查看 [開發指南](./DEVELOPMENT.md) 設置開發環境和了解架構
+3. 參考 [功能特色](./FEATURES.md) 了解系統核心功能
 
 ### 🚀 部署相關
-1. 查看 [部署指南](./DEPLOYMENT_GUIDE.md) 了解部署流程
+1. 查看 [部署指南](./DEPLOYMENT.md) 了解完整部署流程
 2. 使用 [部署腳本](./scripts/deploy.sh) 進行一鍵部署
 3. 運行 [部署檢查](./scripts/check-deployment.sh) 驗證部署狀態
 
 ### 🐛 問題排除
-1. 查看 [故障排除](./TROUBLESHOOTING.md) 尋找解決方案
-2. 參考 [修復記錄](./fixes/) 了解已知問題的修復方法
-3. 檢查 [GitHub Actions 修復](./fixes/GITHUB_ACTIONS_FIX.md) 解決構建問題
+1. 查看 [修復記錄](./FIXES.md) 了解所有已知問題和解決方案
+2. 參考 [開發指南](./DEVELOPMENT.md) 中的故障排除章節
+3. 檢查 [技術升級記錄](./TECHNICAL_UPGRADES.md) 了解系統改進
 
 ### 🎯 功能了解
-1. 閱讀 [功能特色](./features/) 了解系統特色功能
-2. 查看 [UI/UX 文檔](./guides/UI_UX_Documentation.md) 了解介面設計
-3. 參考 [專案總結](./PROJECT_SUMMARY.md) 了解整體完成狀況
+1. 閱讀 [功能特色](./FEATURES.md) 了解 Lazy Update 和統計圖表
+2. 查看 [UI 設計指南](./UI_GUIDE.md) 了解介面設計
+3. 參考 [專案信息](./PROJECT.md) 了解整體完成狀況
 
 ---
 

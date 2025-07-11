@@ -79,54 +79,24 @@ npm run deploy:gh-pages
 
 ## 📖 文檔導覽
 
-### 📋 主要文檔
-
-| 文檔 | 描述 | 適用對象 |
-|------|------|----------|
-| [🏗 開發指南](./docs/DEVELOPMENT_GUIDE.md) | 詳細的開發環境設置和架構說明 | 開發者 |
-| [🚀 部署指南](./docs/DEPLOYMENT_GUIDE.md) | 完整的部署流程和配置說明 | DevOps |
-| [📡 API 文檔](./docs/API_DOCUMENTATION.md) | Firebase Functions API 參考 | 開發者 |
-| [🔧 故障排除](./docs/TROUBLESHOOTING.md) | 常見問題和解決方案 | 所有用戶 |
-
-### 📚 專案文檔
-
-| 文檔 | 描述 |
-|------|------|
-| [📊 專案總結](./docs/PROJECT_SUMMARY.md) | 專案完成狀況和技術總結 |
-| [✅ 完成檢查清單](./docs/FINAL_CHECKLIST.md) | 功能完成度驗證清單 |
-| [🎨 UI/UX 設計](./docs/guides/UI_UX_Documentation.md) | 使用者介面設計文檔 |
-| [📝 專案描述](./docs/projectDescription.md) | 原始專案需求描述 |
-
-### 🔧 技術文檔
-
-| 文檔 | 描述 |
-|------|------|
-| [⚙️ GitHub Actions 設置](./docs/GITHUB_AUTO_BUILD_SETUP.md) | 自動構建和部署設置 |
-| [🐛 Build 修復報告](./docs/GITHUB_BUILD_FIX.md) | GitHub Actions 問題修復記錄 |
-
-### 🛠 修復記錄
-
-| 文檔 | 描述 |
-|------|------|
-| [🔑 管理員密碼修復](./docs/fixes/ADMIN_PASSWORD_FIX.md) | 管理員登入問題修復 |
-| [⚙️ GitHub Actions 修復](./docs/fixes/GITHUB_ACTIONS_FIX.md) | CI/CD 構建問題修復 |
-| [🎛 操作類型修復](./docs/fixes/OPERATION_TYPE_FIX.md) | 管理介面操作類型切換修復 |
-
-### 🚀 功能特色
-
-| 文檔 | 描述 |
-|------|------|
-| [🔄 Lazy Update 功能](./docs/features/LAZY_UPDATE_AND_LIMITS_REMOVAL.md) | 自動補齊每日分數和移除限制 |
-| [📊 公開視圖圖表](./docs/features/PUBLIC_VIEW_CHARTS_FEATURE.md) | 統計圖表和數據分析功能 |
+| 文檔                                       | 描述                                  | 適用對象 |
+| ------------------------------------------ | ------------------------------------- | -------- |
+| [🏗 開發指南](./docs/DEVELOPMENT.md)        | 開發環境、架構說明、API文檔、故障排除 | 開發者   |
+| [🚀 部署指南](./docs/DEPLOYMENT.md)         | 完整的部署流程和配置說明              | DevOps   |
+| [📊 專案信息](./docs/PROJECT.md)            | 專案完成狀況、需求描述、技術總結      | 所有用戶 |
+| [🔧 技術升級](./docs/TECHNICAL_UPGRADES.md) | Node.js升級、pnpm遷移、CI/CD改進      | 開發者   |
+| [🛠 修復記錄](./docs/FIXES.md)              | 所有問題修復記錄和解決方案            | 開發者   |
+| [🚀 功能特色](./docs/FEATURES.md)           | Lazy Update、統計圖表等特色功能       | 所有用戶 |
+| [🎨 UI 設計指南](./docs/UI_GUIDE.md)        | 使用者介面設計文檔                    | 設計師   |
 
 ### 🛠 工具和腳本
 
-| 工具 | 描述 |
-|------|------|
-| [🔧 管理員密碼調試工具](./tools/debug-admin-password.html) | 密碼重置和調試工具 |
-| [🚀 部署腳本](./docs/scripts/deploy.sh) | 一鍵部署到 GitHub Pages |
-| [🧪 測試腳本](./docs/scripts/test-app.sh) | 自動化測試套件 |
-| [📊 部署檢查](./docs/scripts/check-deployment.sh) | 部署狀態檢查工具 |
+| 工具                                                      | 描述                    |
+| --------------------------------------------------------- | ----------------------- |
+| [🔧 管理員密碼調試工具](./tools/debug-admin-password.html) | 密碼重置和調試工具      |
+| [🚀 部署腳本](./docs/scripts/deploy.sh)                    | 一鍵部署到 GitHub Pages |
+| [🧪 測試腳本](./docs/scripts/test-app.sh)                  | 自動化測試套件          |
+| [📊 部署檢查](./docs/scripts/check-deployment.sh)          | 部署狀態檢查工具        |
 
 ---
 
