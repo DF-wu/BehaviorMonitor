@@ -12,8 +12,8 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     minify: 'terser',
-    // 修復 crypto.hash 問題
-    target: 'esnext',
+    // 使用最新 ES 特性，支援 Node.js 24+
+    target: 'es2024',
     rollupOptions: {
       output: {
         // 分割程式碼以優化載入速度
