@@ -56,6 +56,7 @@ const QuickActions: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [customScore, setCustomScore] = useState<number>(0);
   const [customReason, setCustomReason] = useState<string>('');
+  const [selectedType, setSelectedType] = useState<'reward' | 'punishment'>('reward');
 
   /**
    * 處理快速操作按鈕點擊
@@ -74,17 +75,19 @@ const QuickActions: React.FC = () => {
   };
 
   /**
-   * 處理自定義操作表單提交
+   * Handle custom action form submission
+   * 處理自定義操作表單提交，根據選擇的類型調整分數正負值
    * @param values 表單值
    */
-  const handleCustomAction = async (values: { score: number; reason: string; type: 'reward' | 'punishment' }) => {
+  const handleCustomAction = async (values: { score: number; reason: string }) => {
     try {
       setLoading(true);
-      const finalScore = values.type === 'punishment' ? -Math.abs(values.score) : Math.abs(values.score);
+      const finalScore = selectedType === 'punishment' ? -Math.abs(values.score) : Math.abs(values.score);
       await addScore(finalScore, values.reason);
       form.resetFields();
       setCustomScore(0);
       setCustomReason('');
+      setSelectedType('reward'); // Reset to default
     } catch (error) {
       console.error('Custom action error:', error);
     } finally {
@@ -231,18 +234,25 @@ const QuickActions: React.FC = () => {
                 rules={[{ required: true, message: '請選擇操作類型' }]}
               >
                 <Button.Group style={{ width: '100%' }}>
-                  <Button 
-                    type="primary"
+                  <Button
+                    type={selectedType === 'reward' ? 'primary' : 'default'}
                     icon={<TrophyOutlined />}
-                    onClick={() => form.setFieldsValue({ type: 'reward' })}
+                    onClick={() => {
+                      setSelectedType('reward');
+                      form.setFieldsValue({ type: 'reward' });
+                    }}
                     style={{ width: '50%' }}
                   >
                     獎勵
                   </Button>
-                  <Button 
-                    danger
+                  <Button
+                    type={selectedType === 'punishment' ? 'primary' : 'default'}
+                    danger={selectedType === 'punishment'}
                     icon={<WarningOutlined />}
-                    onClick={() => form.setFieldsValue({ type: 'punishment' })}
+                    onClick={() => {
+                      setSelectedType('punishment');
+                      form.setFieldsValue({ type: 'punishment' });
+                    }}
                     style={{ width: '50%' }}
                   >
                     懲罰
@@ -288,13 +298,26 @@ const QuickActions: React.FC = () => {
 
         {/* 預覽 */}
         {(customScore > 0 || customReason) && (
-          <Card size="small" style={{ backgroundColor: '#f6ffed', marginTop: '16px' }}>
+          <Card
+            size="small"
+            style={{
+              backgroundColor: selectedType === 'reward' ? '#f6ffed' : '#fff2f0',
+              marginTop: '16px',
+              borderLeft: `4px solid ${selectedType === 'reward' ? '#52c41a' : '#ff4d4f'}`
+            }}
+          >
             <Text type="secondary">操作預覽：</Text>
             <div style={{ marginTop: '8px' }}>
-              <Tag color={customScore > 0 ? 'green' : 'red'}>
-                {customScore > 0 ? '+' : '-'}{Math.abs(customScore)} 分
+              <Tag color={selectedType === 'reward' ? 'green' : 'red'}>
+                {selectedType === 'reward' ? '+' : '-'}{Math.abs(customScore)} 分
               </Tag>
               <span>{customReason || '(請輸入原因)'}</span>
+              <Tag
+                color={selectedType === 'reward' ? 'blue' : 'orange'}
+                style={{ marginLeft: '8px' }}
+              >
+                {selectedType === 'reward' ? '獎勵' : '懲罰'}
+              </Tag>
             </div>
           </Card>
         )}

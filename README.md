@@ -81,30 +81,30 @@ npm run deploy:gh-pages
 
 ### 📋 主要文檔
 
-| 文檔 | 描述 | 適用對象 |
-|------|------|----------|
-| [🏗 開發指南](./docs/DEVELOPMENT_GUIDE.md) | 詳細的開發環境設置和架構說明 | 開發者 |
-| [🚀 部署指南](./docs/DEPLOYMENT_GUIDE.md) | 完整的部署流程和配置說明 | DevOps |
-| [📡 API 文檔](./docs/API_DOCUMENTATION.md) | Firebase Functions API 參考 | 開發者 |
-| [🔧 故障排除](./docs/TROUBLESHOOTING.md) | 常見問題和解決方案 | 所有用戶 |
+| 文檔                                      | 描述                         | 適用對象 |
+| ----------------------------------------- | ---------------------------- | -------- |
+| [🏗 開發指南](./docs/DEVELOPMENT_GUIDE.md) | 詳細的開發環境設置和架構說明 | 開發者   |
+| [🚀 部署指南](./docs/DEPLOYMENT_GUIDE.md)  | 完整的部署流程和配置說明     | DevOps   |
+| [📡 API 文檔](./docs/API_DOCUMENTATION.md) | Firebase Functions API 參考  | 開發者   |
+| [🔧 故障排除](./docs/TROUBLESHOOTING.md)   | 常見問題和解決方案           | 所有用戶 |
 
 ### 📚 專案文檔
 
-| 文檔 | 描述 |
-|------|------|
-| [📊 專案總結](./docs/PROJECT_SUMMARY.md) | 專案完成狀況和技術總結 |
-| [✅ 完成檢查清單](./docs/FINAL_CHECKLIST.md) | 功能完成度驗證清單 |
-| [🎨 UI/UX 設計](./docs/UI_UX_Documentation.md) | 使用者介面設計文檔 |
-| [📝 專案描述](./docs/projectDescription.md) | 原始專案需求描述 |
+| 文檔                                          | 描述                   |
+| --------------------------------------------- | ---------------------- |
+| [📊 專案總結](./docs/PROJECT_SUMMARY.md)       | 專案完成狀況和技術總結 |
+| [✅ 完成檢查清單](./docs/FINAL_CHECKLIST.md)   | 功能完成度驗證清單     |
+| [🎨 UI/UX 設計](./docs/UI_UX_Documentation.md) | 使用者介面設計文檔     |
+| [📝 專案描述](./docs/projectDescription.md)    | 原始專案需求描述       |
 
 ### 🔧 技術文檔
 
-| 文檔 | 描述 |
-|------|------|
-| [⚙️ GitHub Actions 設置](./docs/GITHUB_AUTO_BUILD_SETUP.md) | 自動構建和部署設置 |
-| [🐛 Build 修復報告](./docs/GITHUB_BUILD_FIX.md) | GitHub Actions 問題修復記錄 |
-| [🧪 測試指南](./test-app.sh) | 自動化測試腳本 |
-| [📊 部署檢查](./check-deployment.sh) | 部署狀態檢查工具 |
+| 文檔                                                       | 描述                        |
+| ---------------------------------------------------------- | --------------------------- |
+| [⚙️ GitHub Actions 設置](./docs/GITHUB_AUTO_BUILD_SETUP.md) | 自動構建和部署設置          |
+| [🐛 Build 修復報告](./docs/GITHUB_BUILD_FIX.md)             | GitHub Actions 問題修復記錄 |
+| [🧪 測試指南](./test-app.sh)                                | 自動化測試腳本              |
+| [📊 部署檢查](./check-deployment.sh)                        | 部署狀態檢查工具            |
 
 ---
 
@@ -206,6 +206,9 @@ VITE_FIREBASE_PROJECT_ID=your-project-id
 ## 📄 授權
 
 MIT License - 詳見 [LICENSE](LICENSE) 文件
+
+## misc
+我有個朋友要是看到我這個專案可能就再也見不到他了。
 
 ---
 
