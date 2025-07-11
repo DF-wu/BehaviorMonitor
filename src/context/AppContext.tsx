@@ -126,7 +126,7 @@ export function AppProvider({ children }: AppProviderProps) {
       dispatch({ type: ActionType.SET_CURRENT_SCORE, payload: state.currentScore + score });
       
       // 重新計算統計資料
-      calculateStatistics();
+      calculateStatistics([newRecord, ...state.scoreRecords]);
       
       message.success(`已${type === 'reward' ? '獎勵' : '懲罰'} ${Math.abs(score)} 分`);
     } catch (error) {
@@ -201,14 +201,11 @@ export function AppProvider({ children }: AppProviderProps) {
   };
 
   /**
-   * Calculate statistics based on current score records
-   * 根據目前的分數記錄計算統計資料
+   * Calculate statistics based on provided score records
+   * 根據提供的分數記錄計算統計資料
    * Wrapped in useCallback to prevent unnecessary re-renders
    */
-  const calculateStatistics = useCallback(() => {
-    const { scoreRecords } = state;
-    // settings - removed unused destructuring
-    
+  const calculateStatistics = useCallback((scoreRecords: ScoreRecord[]) => {
     if (scoreRecords.length === 0) {
       dispatch({ type: ActionType.SET_STATISTICS, payload: null });
       return;
@@ -217,7 +214,7 @@ export function AppProvider({ children }: AppProviderProps) {
     const totalScore = scoreRecords.reduce((sum, record) => sum + record.score, 0);
     const rewardRecords = scoreRecords.filter(record => record.type === 'reward');
     const punishmentRecords = scoreRecords.filter(record => record.type === 'punishment');
-    
+
     const statistics: Statistics = {
       totalScore,
       highestScore: Math.max(...scoreRecords.map(r => r.score)),
@@ -230,7 +227,7 @@ export function AppProvider({ children }: AppProviderProps) {
     };
 
     dispatch({ type: ActionType.SET_STATISTICS, payload: statistics });
-  }, [state.scoreRecords, dispatch]);
+  }, [dispatch]);
 
   // 初始化載入資料
   useEffect(() => {
@@ -240,7 +237,7 @@ export function AppProvider({ children }: AppProviderProps) {
 
   // 當分數記錄變化時重新計算統計資料
   useEffect(() => {
-    calculateStatistics();
+    calculateStatistics(state.scoreRecords);
   }, [state.scoreRecords, calculateStatistics]);
 
   const contextValue: AppContextType = {

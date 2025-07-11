@@ -6,7 +6,7 @@
  */
 
 import { createContext } from 'react';
-import type { AppState, Action, SystemSettings } from '../types';
+import type { AppState, Action, SystemSettings, ScoreRecord } from '../types';
 
 // Context interface definition
 // Context 介面定義，包含所有狀態和操作函數
@@ -21,7 +21,7 @@ interface AppContextType {
   loadScoreRecords: () => Promise<void>;
   loadSettings: () => Promise<void>;
   updateSettings: (settings: Partial<SystemSettings>) => Promise<void>;
-  calculateStatistics: () => void;
+  calculateStatistics: (scoreRecords: ScoreRecord[]) => void;
 }
 
 // Create the context with undefined default value
