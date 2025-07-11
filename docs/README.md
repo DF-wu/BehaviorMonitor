@@ -4,7 +4,7 @@
 
 本目錄包含 Behavior Monitor 專案的所有文檔，按類別組織：
 
-### 📋 主要文檔
+### 📋 核心文檔
 - [DEVELOPMENT_GUIDE.md](./DEVELOPMENT_GUIDE.md) - 開發環境設置和架構說明
 - [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) - 部署流程和配置說明
 - [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) - Firebase Functions API 參考
@@ -15,7 +15,9 @@
 - [FINAL_CHECKLIST.md](./FINAL_CHECKLIST.md) - 功能完成度驗證清單
 - [projectDescription.md](./projectDescription.md) - 原始專案需求描述
 
-### 🔧 技術文檔
+### 🔧 技術升級文檔
+- [NODE_UPGRADE.md](./NODE_UPGRADE.md) - Node.js 升級到最新版本指南
+- [PNPM_MIGRATION.md](./PNPM_MIGRATION.md) - npm 到 pnpm 遷移指南
 - [GITHUB_AUTO_BUILD_SETUP.md](./GITHUB_AUTO_BUILD_SETUP.md) - GitHub Actions 自動構建設置
 - [GITHUB_BUILD_FIX.md](./GITHUB_BUILD_FIX.md) - GitHub Actions 問題修復記錄
 
@@ -23,15 +25,16 @@
 - [ADMIN_PASSWORD_FIX.md](./fixes/ADMIN_PASSWORD_FIX.md) - 管理員登入問題修復
 - [GITHUB_ACTIONS_FIX.md](./fixes/GITHUB_ACTIONS_FIX.md) - CI/CD 構建問題修復
 - [OPERATION_TYPE_FIX.md](./fixes/OPERATION_TYPE_FIX.md) - 管理介面操作類型切換修復
+- [PNPM_WORKSPACE_FIX.md](./fixes/PNPM_WORKSPACE_FIX.md) - pnpm workspace 配置錯誤修復
 
 ### 🚀 功能特色 (features/)
 - [LAZY_UPDATE_AND_LIMITS_REMOVAL.md](./features/LAZY_UPDATE_AND_LIMITS_REMOVAL.md) - Lazy Update 和移除限制功能
 - [PUBLIC_VIEW_CHARTS_FEATURE.md](./features/PUBLIC_VIEW_CHARTS_FEATURE.md) - 公開視圖統計圖表功能
 
-### 📖 指南文檔 (guides/)
+### 📖 使用指南 (guides/)
 - [UI_UX_Documentation.md](./guides/UI_UX_Documentation.md) - 使用者介面設計文檔
 
-### 🛠 腳本工具 (scripts/)
+### 🛠 工具腳本 (scripts/)
 - [deploy.sh](./scripts/deploy.sh) - 一鍵部署到 GitHub Pages
 - [test-app.sh](./scripts/test-app.sh) - 自動化測試套件
 - [check-deployment.sh](./scripts/check-deployment.sh) - 部署狀態檢查工具
