@@ -34,19 +34,24 @@ const { TextArea } = Input;
 
 /**
  * 預設的快速操作按鈕配置
+ * Default quick action button configurations (no limits)
  */
 const QUICK_ACTIONS = {
   rewards: [
     { score: 5, reason: '完成作業', color: '#52c41a' },
     { score: 10, reason: '主動幫忙家務', color: '#1890ff' },
-    { score: 15, reason: '表現優秀', color: '#722ed1' },
-    { score: 20, reason: '特別優秀表現', color: '#eb2f96' }
+    { score: 25, reason: '表現優秀', color: '#722ed1' },
+    { score: 50, reason: '特別優秀表現', color: '#eb2f96' },
+    { score: 100, reason: '傑出成就', color: '#f759ab' },
+    { score: 200, reason: '重大成就', color: '#13c2c2' }
   ],
   punishments: [
-    { score: -3, reason: '忘記做某件事', color: '#fa8c16' },
-    { score: -5, reason: '不聽話', color: '#fa541c' },
-    { score: -10, reason: '犯錯誤', color: '#ff4d4f' },
-    { score: -15, reason: '嚴重違規', color: '#a0d911' }
+    { score: -5, reason: '忘記做某件事', color: '#fa8c16' },
+    { score: -10, reason: '不聽話', color: '#fa541c' },
+    { score: -25, reason: '犯錯誤', color: '#ff4d4f' },
+    { score: -50, reason: '嚴重違規', color: '#ff7875' },
+    { score: -100, reason: '重大違規', color: '#ff4d4f' },
+    { score: -200, reason: '極嚴重違規', color: '#cf1322' }
   ]
 };
 
@@ -104,9 +109,9 @@ const QuickActions: React.FC = () => {
     const icon = type === 'reward' ? <TrophyOutlined /> : <WarningOutlined />;
     
     return (
-      <Row gutter={[12, 12]}>
+      <Row gutter={[8, 8]}>
         {actions.map((action, index) => (
-          <Col xs={12} sm={6} key={index}>
+          <Col xs={12} sm={8} md={6} lg={4} key={index}>
             <Button
               type={type === 'reward' ? 'primary' : 'default'}
               danger={type === 'punishment'}
@@ -116,17 +121,17 @@ const QuickActions: React.FC = () => {
               block
               style={{
                 height: 'auto',
-                padding: '12px 8px',
+                padding: '8px 4px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '4px'
+                gap: '2px'
               }}
             >
-              <div style={{ fontWeight: 'bold', fontSize: '16px' }}>
+              <div style={{ fontWeight: 'bold', fontSize: '14px' }}>
                 {action.score > 0 ? '+' : ''}{action.score}
               </div>
-              <div style={{ fontSize: '12px', textAlign: 'center' }}>
+              <div style={{ fontSize: '10px', textAlign: 'center', lineHeight: '1.2' }}>
                 {action.reason}
               </div>
             </Button>
@@ -214,12 +219,11 @@ const QuickActions: React.FC = () => {
                 label="分數數量"
                 rules={[
                   { required: true, message: '請輸入分數' },
-                  { type: 'number', min: 1, max: 100, message: '分數必須在 1-100 之間' }
+                  { type: 'number', min: 1, message: '分數必須大於 0' }
                 ]}
               >
                 <InputNumber
                   min={1}
-                  max={100}
                   placeholder="輸入分數"
                   style={{ width: '100%' }}
                   onChange={(value) => setCustomScore(value || 0)}
@@ -281,16 +285,13 @@ const QuickActions: React.FC = () => {
             name="reason"
             label="操作原因"
             rules={[
-              { required: true, message: '請輸入操作原因' },
-              { min: 2, message: '原因至少需要 2 個字符' },
-              { max: 100, message: '原因不能超過 100 個字符' }
+              { required: true, message: '請輸入操作原因' }
             ]}
           >
             <TextArea
               rows={3}
               placeholder="請詳細描述這次操作的原因..."
               showCount
-              maxLength={100}
               onChange={(e) => setCustomReason(e.target.value)}
             />
           </Form.Item>

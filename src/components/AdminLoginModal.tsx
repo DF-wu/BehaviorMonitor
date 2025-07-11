@@ -140,7 +140,6 @@ const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
         fontSize: '12px'
       }}>
         <p>輸入正確的管理員密碼以進入管理介面</p>
-        <p>預設密碼：admin123</p>
       </div>
     </Modal>
   );

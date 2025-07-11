@@ -38,17 +38,21 @@ const COLLECTIONS = {
 export class ScoreService {
   /**
    * 獲取所有分數記錄
+   * Get all score records with lazy daily increment update
    * @param limitCount 限制返回的記錄數量，預設為 50
    * @returns Promise<ScoreRecord[]>
    */
   static async getScoreRecords(limitCount: number = 50): Promise<ScoreRecord[]> {
     try {
+      // Perform lazy daily increment update before fetching records
+      await this.performLazyDailyUpdate();
+
       const q = query(
         collection(db, COLLECTIONS.SCORE_RECORDS),
         orderBy('timestamp', 'desc'),
         limit(limitCount)
       );
-      
+
       const querySnapshot = await getDocs(q);
       return querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -126,6 +130,94 @@ export class ScoreService {
       
       callback(records);
     });
+  }
+
+  /**
+   * Perform lazy daily increment update
+   * 執行延遲的每日分數增加更新，補齊錯過的天數
+   */
+  static async performLazyDailyUpdate(): Promise<void> {
+    try {
+      // Get system settings to check daily increment value
+      const settings = await SettingsService.getSettings();
+      if (!settings || settings.dailyIncrement <= 0) {
+        return; // No daily increment configured
+      }
+
+      // Get the last daily increment record
+      const lastIncrementRecord = await this.getLastDailyIncrementRecord();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set to start of day
+
+      let lastIncrementDate: Date;
+      if (lastIncrementRecord) {
+        lastIncrementDate = new Date(lastIncrementRecord.timestamp);
+        lastIncrementDate.setHours(0, 0, 0, 0);
+      } else {
+        // If no previous increment, start from yesterday to avoid double increment today
+        lastIncrementDate = new Date(today);
+        lastIncrementDate.setDate(lastIncrementDate.getDate() - 1);
+      }
+
+      // Calculate days to add increments for
+      const daysDifference = Math.floor((today.getTime() - lastIncrementDate.getTime()) / (1000 * 60 * 60 * 24));
+
+      if (daysDifference <= 0) {
+        return; // No days to catch up
+      }
+
+      console.log(`Performing lazy daily update for ${daysDifference} days`);
+
+      // Add daily increments for each missed day
+      for (let i = 1; i <= daysDifference; i++) {
+        const incrementDate = new Date(lastIncrementDate);
+        incrementDate.setDate(incrementDate.getDate() + i);
+        incrementDate.setHours(12, 0, 0, 0); // Set to noon to avoid timezone issues
+
+        await this.addScoreRecord(
+          settings.dailyIncrement,
+          `每日自動增加 (補齊 ${incrementDate.toLocaleDateString('zh-TW')})`,
+          'reward'
+        );
+      }
+
+      console.log(`Lazy daily update completed: added ${daysDifference} daily increments`);
+    } catch (error) {
+      console.error('Error in lazy daily update:', error);
+      // Don't throw error to avoid breaking the main flow
+    }
+  }
+
+  /**
+   * Get the last daily increment record
+   * 獲取最後一次每日增加的記錄
+   */
+  private static async getLastDailyIncrementRecord(): Promise<ScoreRecord | null> {
+    try {
+      const q = query(
+        collection(db, COLLECTIONS.SCORE_RECORDS),
+        where('reason', '>=', '每日自動增加'),
+        where('reason', '<', '每日自動增加\uf8ff'),
+        orderBy('reason'),
+        orderBy('timestamp', 'desc'),
+        limit(1)
+      );
+
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        return null;
+      }
+
+      const doc = querySnapshot.docs[0];
+      return {
+        id: doc.id,
+        ...doc.data(),
+        timestamp: doc.data().timestamp.toDate()
+      } as ScoreRecord;
+    } catch (error) {
+      console.error('Error getting last daily increment record:', error);
+      return null;
+    }
   }
 }
 
