@@ -30,15 +30,6 @@ export default defineConfig({
   define: {
     global: 'globalThis',
   },
-  // 解決 @antv/layout 的 crypto 問題
-  resolve: {
-    alias: {
-      crypto: 'crypto-browserify'
-    }
-  },
-  optimizeDeps: {
-    include: ['crypto-browserify']
-  },
   server: {
     // 開發服務器設定
     port: 5173,
