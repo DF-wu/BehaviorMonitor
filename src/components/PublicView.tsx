@@ -39,6 +39,24 @@ const getBackgroundColor = (score: number): string => {
 };
 
 /**
+ * 顯示頁面標題
+ * @returns JSX 元素
+ */
+
+const showPageTitle = () => (
+  <Title
+    level={2}
+    style={{
+      textAlign: 'center',
+      marginBottom: '20px'
+    }}
+  >
+    豬腳分數
+  </Title>
+);
+
+
+/**
  * 根據分數返回對應的文字顏色
  * @param score 目前分數
  * @returns CSS 顏色值
@@ -48,6 +66,8 @@ const getTextColor = (score: number): string => {
   if (score >= 40) return '#004085'; // 深藍色
   return '#721c24'; // 深紅色
 };
+
+
 
 /**
  * 格式化分數記錄項目
@@ -272,6 +292,9 @@ const PublicView: React.FC = () => {
         transition: 'background-color 0.3s ease'
       }}
     >
+      {/* 頁面標題 */}
+      {showPageTitle()}
+
       {/* 主要分數顯示區域 */}
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <Title 
@@ -309,8 +332,57 @@ const PublicView: React.FC = () => {
       {scoreRecords.length > 0 && (
         <div style={{ maxWidth: '1200px', margin: '0 auto 40px auto' }}>
           <Tabs
-            defaultActiveKey="trend"
+            defaultActiveKey="stats"
             items={[
+              {
+                key: 'stats',
+                label: (
+                  <Space>
+                    <TrophyOutlined />
+                    統計摘要
+                  </Space>
+                ),
+                children: (
+                  <Card
+                    title="統計摘要"
+                    style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  >
+                    <Row gutter={16}>
+                      <Col xs={12} sm={6}>
+                        <Statistic
+                          title="總記錄數"
+                          value={scoreRecords.length}
+                          suffix="筆"
+                        />
+                      </Col>
+                      <Col xs={12} sm={6}>
+                        <Statistic
+                          title="獎勵次數"
+                          value={scoreRecords.filter(r => r.type === 'reward').length}
+                          valueStyle={{ color: '#52c41a' }}
+                          suffix="次"
+                        />
+                      </Col>
+                      <Col xs={12} sm={6}>
+                        <Statistic
+                          title="懲罰次數"
+                          value={scoreRecords.filter(r => r.type === 'punishment').length}
+                          valueStyle={{ color: '#ff4d4f' }}
+                          suffix="次"
+                        />
+                      </Col>
+                      <Col xs={12} sm={6}>
+                        <Statistic
+                          title="平均分數"
+                          value={Math.round(scoreRecords.reduce((sum, r) => sum + r.score, 0) / scoreRecords.length * 100) / 100}
+                          precision={1}
+                          suffix="分"
+                        />
+                      </Col>
+                    </Row>
+                  </Card>
+                ),
+              },
               {
                 key: 'trend',
                 label: (
@@ -365,55 +437,6 @@ const PublicView: React.FC = () => {
                     <div style={{ height: '300px' }}>
                       {renderHeatmapChart()}
                     </div>
-                  </Card>
-                ),
-              },
-              {
-                key: 'stats',
-                label: (
-                  <Space>
-                    <TrophyOutlined />
-                    統計摘要
-                  </Space>
-                ),
-                children: (
-                  <Card
-                    title="統計摘要"
-                    style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                  >
-                    <Row gutter={16}>
-                      <Col xs={12} sm={6}>
-                        <Statistic
-                          title="總記錄數"
-                          value={scoreRecords.length}
-                          suffix="筆"
-                        />
-                      </Col>
-                      <Col xs={12} sm={6}>
-                        <Statistic
-                          title="獎勵次數"
-                          value={scoreRecords.filter(r => r.type === 'reward').length}
-                          valueStyle={{ color: '#52c41a' }}
-                          suffix="次"
-                        />
-                      </Col>
-                      <Col xs={12} sm={6}>
-                        <Statistic
-                          title="懲罰次數"
-                          value={scoreRecords.filter(r => r.type === 'punishment').length}
-                          valueStyle={{ color: '#ff4d4f' }}
-                          suffix="次"
-                        />
-                      </Col>
-                      <Col xs={12} sm={6}>
-                        <Statistic
-                          title="平均分數"
-                          value={Math.round(scoreRecords.reduce((sum, r) => sum + r.score, 0) / scoreRecords.length * 100) / 100}
-                          precision={1}
-                          suffix="分"
-                        />
-                      </Col>
-                    </Row>
                   </Card>
                 ),
               },
