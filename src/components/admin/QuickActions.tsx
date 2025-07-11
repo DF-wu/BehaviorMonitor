@@ -38,16 +38,16 @@ const { TextArea } = Input;
  */
 const QUICK_ACTIONS = {
   rewards: [
-    { score: 5, reason: '完成作業', color: '#52c41a' },
-    { score: 10, reason: '主動幫忙家務', color: '#1890ff' },
-    { score: 25, reason: '表現優秀', color: '#722ed1' },
+    { score: 1, reason: '完成作業', color: '#52c41a' },
+    { score: 3, reason: '主動幫忙家務', color: '#1890ff' },
+    { score: 10, reason: '表現優秀', color: '#722ed1' },
     { score: 50, reason: '特別優秀表現', color: '#eb2f96' },
     { score: 100, reason: '傑出成就', color: '#f759ab' },
     { score: 200, reason: '重大成就', color: '#13c2c2' }
   ],
   punishments: [
-    { score: -5, reason: '忘記做某件事', color: '#fa8c16' },
-    { score: -10, reason: '不聽話', color: '#fa541c' },
+    { score: -10, reason: '忘記做某件事', color: '#fa8c16' },
+    { score: -15, reason: '不聽話', color: '#fa541c' },
     { score: -25, reason: '犯錯誤', color: '#ff4d4f' },
     { score: -50, reason: '嚴重違規', color: '#ff7875' },
     { score: -100, reason: '重大違規', color: '#ff4d4f' },

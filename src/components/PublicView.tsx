@@ -5,9 +5,17 @@
  * 不需要登入即可查看，是弟弟主要使用的頁面
  */
 
-import React, { useState } from 'react';
-import { Card, List, Typography, Space, Tag, FloatButton } from 'antd';
-import { SettingOutlined, TrophyOutlined, WarningOutlined } from '@ant-design/icons';
+import React, { useState, useMemo } from 'react';
+import { Card, List, Typography, Space, Tag, FloatButton, Tabs, Row, Col, Statistic } from 'antd';
+import {
+  SettingOutlined,
+  TrophyOutlined,
+  WarningOutlined,
+  BarChartOutlined,
+  LineChartOutlined,
+  DotChartOutlined
+} from '@ant-design/icons';
+import { Line, Column, Heatmap } from '@ant-design/charts';
 import { useApp } from '../hooks/useApp';
 import type { ScoreRecord } from '../types';
 import AdminLoginModal from './AdminLoginModal';
@@ -81,13 +89,179 @@ const renderScoreRecord = (record: ScoreRecord) => {
 const PublicView: React.FC = () => {
   const { state } = useApp();
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
-  
+
   const { currentScore, scoreRecords, loading } = state;
+
+  // 計算統計數據
+  const chartData = useMemo(() => {
+    if (!scoreRecords.length) return { trendData: [], heatmapData: [], dailyData: [] };
+
+    // 趨勢分析數據 - 累積分數變化
+    const trendData = scoreRecords
+      .slice()
+      .reverse() // 按時間順序排列
+      .reduce((acc, record, index) => {
+        const prevTotal = index > 0 ? acc[index - 1].total : 0;
+        const newTotal = prevTotal + record.score;
+        acc.push({
+          date: dayjs(record.timestamp).format('MM-DD'),
+          score: record.score,
+          total: newTotal,
+          type: record.type === 'reward' ? '獎勵' : '懲罰'
+        });
+        return acc;
+      }, [] as any[]);
+
+    // 每日統計數據
+    const dailyStats = scoreRecords.reduce((acc, record) => {
+      const date = dayjs(record.timestamp).format('YYYY-MM-DD');
+      if (!acc[date]) {
+        acc[date] = { date, rewards: 0, punishments: 0, total: 0 };
+      }
+      if (record.type === 'reward') {
+        acc[date].rewards += record.score;
+      } else {
+        acc[date].punishments += Math.abs(record.score);
+      }
+      acc[date].total += record.score;
+      return acc;
+    }, {} as Record<string, any>);
+
+    const dailyData = Object.values(dailyStats)
+      .sort((a: any, b: any) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf())
+      .slice(-14); // 最近14天
+
+    // 熱力圖數據 - 一週內每小時的活動分佈
+    const heatmapData = scoreRecords
+      .filter(record => dayjs().diff(dayjs(record.timestamp), 'day') <= 7)
+      .reduce((acc, record) => {
+        const hour = dayjs(record.timestamp).hour();
+        const day = dayjs(record.timestamp).format('dddd');
+        const key = `${day}-${hour}`;
+        if (!acc[key]) {
+          acc[key] = { day, hour, count: 0, score: 0 };
+        }
+        acc[key].count += 1;
+        acc[key].score += Math.abs(record.score);
+        return acc;
+      }, {} as Record<string, any>);
+
+    return {
+      trendData,
+      dailyData,
+      heatmapData: Object.values(heatmapData)
+    };
+  }, [scoreRecords]);
   
   // 計算最後更新時間
-  const lastUpdateTime = scoreRecords.length > 0 
+  const lastUpdateTime = scoreRecords.length > 0
     ? dayjs(scoreRecords[0].timestamp).format('YYYY-MM-DD HH:mm')
     : '尚無記錄';
+
+  // 渲染趨勢分析圖表
+  const renderTrendChart = () => {
+    if (!chartData.trendData.length) {
+      return <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>暫無數據</div>;
+    }
+
+    const config = {
+      data: chartData.trendData,
+      xField: 'date',
+      yField: 'total',
+      seriesField: 'type',
+      smooth: true,
+      animation: {
+        appear: {
+          animation: 'path-in',
+          duration: 1000,
+        },
+      },
+      color: ['#52c41a', '#ff4d4f'],
+      point: {
+        size: 4,
+        shape: 'circle',
+      },
+      tooltip: {
+        formatter: (datum: any) => {
+          return {
+            name: datum.type,
+            value: `${datum.score > 0 ? '+' : ''}${datum.score} 分 (累計: ${datum.total})`
+          };
+        },
+      },
+    };
+
+    return <Line {...config} />;
+  };
+
+  // 渲染每日統計柱狀圖
+  const renderDailyChart = () => {
+    if (!chartData.dailyData.length) {
+      return <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>暫無數據</div>;
+    }
+
+    const data = chartData.dailyData.flatMap((item: any) => [
+      { date: dayjs(item.date).format('MM-DD'), type: '獎勵', value: item.rewards },
+      { date: dayjs(item.date).format('MM-DD'), type: '懲罰', value: item.punishments }
+    ]);
+
+    const config = {
+      data,
+      xField: 'date',
+      yField: 'value',
+      seriesField: 'type',
+      isGroup: true,
+      color: ['#52c41a', '#ff4d4f'],
+      columnStyle: {
+        radius: [4, 4, 0, 0],
+      },
+      tooltip: {
+        formatter: (datum: any) => {
+          return {
+            name: datum.type,
+            value: `${datum.value} 分`
+          };
+        },
+      },
+    };
+
+    return <Column {...config} />;
+  };
+
+  // 渲染活動熱力圖
+  const renderHeatmapChart = () => {
+    if (!chartData.heatmapData.length) {
+      return <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>暫無數據</div>;
+    }
+
+    const config = {
+      data: chartData.heatmapData,
+      xField: 'hour',
+      yField: 'day',
+      colorField: 'count',
+      color: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'],
+      tooltip: {
+        formatter: (datum: any) => {
+          return {
+            name: '活動次數',
+            value: `${datum.count} 次 (${datum.score} 分)`
+          };
+        },
+      },
+      xAxis: {
+        title: {
+          text: '小時',
+        },
+      },
+      yAxis: {
+        title: {
+          text: '星期',
+        },
+      },
+    };
+
+    return <Heatmap {...config} />;
+  };
 
   return (
     <div 
@@ -131,17 +305,134 @@ const PublicView: React.FC = () => {
         </Text>
       </div>
 
+      {/* 統計分析區域 */}
+      {scoreRecords.length > 0 && (
+        <div style={{ maxWidth: '1200px', margin: '0 auto 40px auto' }}>
+          <Tabs
+            defaultActiveKey="trend"
+            items={[
+              {
+                key: 'trend',
+                label: (
+                  <Space>
+                    <LineChartOutlined />
+                    趨勢分析
+                  </Space>
+                ),
+                children: (
+                  <Card
+                    title="分數趨勢變化"
+                    style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  >
+                    <div style={{ height: '300px' }}>
+                      {renderTrendChart()}
+                    </div>
+                  </Card>
+                ),
+              },
+              {
+                key: 'daily',
+                label: (
+                  <Space>
+                    <BarChartOutlined />
+                    每日統計
+                  </Space>
+                ),
+                children: (
+                  <Card
+                    title="每日獎懲統計 (最近14天)"
+                    style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  >
+                    <div style={{ height: '300px' }}>
+                      {renderDailyChart()}
+                    </div>
+                  </Card>
+                ),
+              },
+              {
+                key: 'heatmap',
+                label: (
+                  <Space>
+                    <DotChartOutlined />
+                    活動熱力圖
+                  </Space>
+                ),
+                children: (
+                  <Card
+                    title="一週活動分佈熱力圖"
+                    style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  >
+                    <div style={{ height: '300px' }}>
+                      {renderHeatmapChart()}
+                    </div>
+                  </Card>
+                ),
+              },
+              {
+                key: 'stats',
+                label: (
+                  <Space>
+                    <TrophyOutlined />
+                    統計摘要
+                  </Space>
+                ),
+                children: (
+                  <Card
+                    title="統計摘要"
+                    style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                  >
+                    <Row gutter={16}>
+                      <Col xs={12} sm={6}>
+                        <Statistic
+                          title="總記錄數"
+                          value={scoreRecords.length}
+                          suffix="筆"
+                        />
+                      </Col>
+                      <Col xs={12} sm={6}>
+                        <Statistic
+                          title="獎勵次數"
+                          value={scoreRecords.filter(r => r.type === 'reward').length}
+                          valueStyle={{ color: '#52c41a' }}
+                          suffix="次"
+                        />
+                      </Col>
+                      <Col xs={12} sm={6}>
+                        <Statistic
+                          title="懲罰次數"
+                          value={scoreRecords.filter(r => r.type === 'punishment').length}
+                          valueStyle={{ color: '#ff4d4f' }}
+                          suffix="次"
+                        />
+                      </Col>
+                      <Col xs={12} sm={6}>
+                        <Statistic
+                          title="平均分數"
+                          value={Math.round(scoreRecords.reduce((sum, r) => sum + r.score, 0) / scoreRecords.length * 100) / 100}
+                          precision={1}
+                          suffix="分"
+                        />
+                      </Col>
+                    </Row>
+                  </Card>
+                ),
+              },
+            ]}
+          />
+        </div>
+      )}
+
       {/* 分數記錄列表 */}
-      <Card 
+      <Card
         title={
           <Space>
             <TrophyOutlined />
-            <span>表現記錄</span>
+            <span>最新記錄</span>
             <Tag color="blue">{scoreRecords.length} 筆記錄</Tag>
           </Space>
         }
-        style={{ 
-          maxWidth: '800px', 
+        style={{
+          maxWidth: '800px',
           margin: '0 auto',
           boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
         }}
@@ -154,10 +445,10 @@ const PublicView: React.FC = () => {
           </div>
         ) : (
           <List
-            dataSource={scoreRecords.slice(0, 20)} // 只顯示最新的 20 筆記錄
+            dataSource={scoreRecords.slice(0, 10)} // 只顯示最新的 10 筆記錄
             renderItem={renderScoreRecord}
             loading={loading}
-            style={{ maxHeight: '600px', overflowY: 'auto' }}
+            style={{ maxHeight: '400px', overflowY: 'auto' }}
           />
         )}
       </Card>
