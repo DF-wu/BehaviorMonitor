@@ -1,0 +1,84 @@
+/**
+ * Firestore 安全規則
+ * 
+ * 這個文件定義了 Firestore 資料庫的存取權限規則
+ * 由於這是個人專案，規則相對寬鬆，但仍然提供基本的安全保護
+ */
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 分數記錄集合的規則
+    // 允許讀取所有記錄，但只允許新增和刪除（不允許修改）
+    match /scoreRecords/{document} {
+      // 允許所有人讀取分數記錄（用於公開頁面顯示）
+      allow read: if true;
+      
+      // 允許新增記錄（管理員操作）
+      allow create: if true;
+      
+      // 允許刪除記錄（管理員操作）
+      allow delete: if true;
+      
+      // 不允許修改現有記錄（保持資料完整性）
+      allow update: if false;
+    }
+    
+    // 系統設定集合的規則
+    // 允許讀取設定，但限制寫入操作
+    match /settings/{document} {
+      // 允許讀取設定（用於驗證密碼和獲取配置）
+      allow read: if true;
+      
+      // 允許創建和更新設定
+      // 在實際部署時，可以考慮加入更嚴格的驗證
+      allow create, update: if true;
+      
+      // 不允許刪除設定
+      allow delete: if false;
+    }
+    
+    // 每日分數快照集合的規則
+    // 用於統計和圖表顯示
+    match /dailyScores/{document} {
+      // 允許讀取每日分數資料
+      allow read: if true;
+      
+      // 允許創建和更新每日分數快照
+      allow create, update: if true;
+      
+      // 允許刪除舊的快照資料
+      allow delete: if true;
+    }
+    
+    // 預設規則：拒絕所有其他操作
+    // 這確保了只有明確定義的集合才能被存取
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+/**
+ * 安全規則說明：
+ * 
+ * 1. scoreRecords 集合：
+ *    - 允許所有人讀取：用於公開頁面顯示分數和歷史記錄
+ *    - 允許新增記錄：管理員可以新增獎勵或懲罰記錄
+ *    - 允許刪除記錄：管理員可以刪除錯誤的記錄
+ *    - 禁止修改記錄：保持歷史記錄的完整性
+ * 
+ * 2. settings 集合：
+ *    - 允許讀取：用於密碼驗證和獲取系統配置
+ *    - 允許創建/更新：管理員可以修改系統設定
+ *    - 禁止刪除：防止意外刪除重要設定
+ * 
+ * 3. dailyScores 集合：
+ *    - 允許所有操作：用於統計資料的計算和維護
+ * 
+ * 注意事項：
+ * - 這些規則適用於個人專案，在生產環境中可能需要更嚴格的驗證
+ * - 可以考慮加入基於時間的限制或 IP 白名單
+ * - 對於敏感操作，可以考慮使用 Firebase Functions 來處理
+ */
