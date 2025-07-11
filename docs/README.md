@@ -19,7 +19,9 @@
 - [check-deployment.sh](./scripts/check-deployment.sh) - 部署狀態檢查工具
 
 ### 📁 其他文檔
+- [ORIGINAL_REQUIREMENTS.md](./ORIGINAL_REQUIREMENTS.md) - 原始專案需求文檔
 - [FILE_STRUCTURE_CLEANUP.md](./FILE_STRUCTURE_CLEANUP.md) - 文件結構清理記錄
+- [DOCUMENTATION_CONSOLIDATION.md](./DOCUMENTATION_CONSOLIDATION.md) - 文檔合併記錄
 - [README.md](./README.md) - 本文檔導覽
 
 ---

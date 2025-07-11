@@ -79,15 +79,16 @@ npm run deploy:gh-pages
 
 ## 📖 文檔導覽
 
-| 文檔                                       | 描述                                  | 適用對象 |
-| ------------------------------------------ | ------------------------------------- | -------- |
-| [🏗 開發指南](./docs/DEVELOPMENT.md)        | 開發環境、架構說明、API文檔、故障排除 | 開發者   |
-| [🚀 部署指南](./docs/DEPLOYMENT.md)         | 完整的部署流程和配置說明              | DevOps   |
-| [📊 專案信息](./docs/PROJECT.md)            | 專案完成狀況、需求描述、技術總結      | 所有用戶 |
-| [🔧 技術升級](./docs/TECHNICAL_UPGRADES.md) | Node.js升級、pnpm遷移、CI/CD改進      | 開發者   |
-| [🛠 修復記錄](./docs/FIXES.md)              | 所有問題修復記錄和解決方案            | 開發者   |
-| [🚀 功能特色](./docs/FEATURES.md)           | Lazy Update、統計圖表等特色功能       | 所有用戶 |
-| [🎨 UI 設計指南](./docs/UI_GUIDE.md)        | 使用者介面設計文檔                    | 設計師   |
+| 文檔                                          | 描述                                  | 適用對象 |
+| --------------------------------------------- | ------------------------------------- | -------- |
+| [🏗 開發指南](./docs/DEVELOPMENT.md)           | 開發環境、架構說明、API文檔、故障排除 | 開發者   |
+| [🚀 部署指南](./docs/DEPLOYMENT.md)            | 完整的部署流程和配置說明              | DevOps   |
+| [📊 專案信息](./docs/PROJECT.md)               | 專案完成狀況、技術總結                | 所有用戶 |
+| [📋 原始需求](./docs/ORIGINAL_REQUIREMENTS.md) | 專案最初需求和背景描述                | 所有用戶 |
+| [🔧 技術升級](./docs/TECHNICAL_UPGRADES.md)    | Node.js升級、pnpm遷移、CI/CD改進      | 開發者   |
+| [🛠 修復記錄](./docs/FIXES.md)                 | 所有問題修復記錄和解決方案            | 開發者   |
+| [🚀 功能特色](./docs/FEATURES.md)              | Lazy Update、統計圖表等特色功能       | 所有用戶 |
+| [🎨 UI 設計指南](./docs/UI_GUIDE.md)           | 使用者介面設計文檔                    | 設計師   |
 
 ### 🛠 工具和腳本
 
