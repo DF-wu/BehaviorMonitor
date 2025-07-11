@@ -34,17 +34,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup Node.js environment
+      # Setup pnpm package manager first
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      # Setup Node.js environment with pnpm cache
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "24"
-
-      # Setup pnpm package manager
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
+          cache: "pnpm"
 
       # Install project dependencies
       - name: Install dependencies
